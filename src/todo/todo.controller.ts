@@ -1,35 +1,25 @@
-import { TodoStatusEnum } from './enums/todo-status.enum';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { Todo } from './Model/todo.model';
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
-
+import { Request } from 'express';
+import { v4 as uuidv4 } from 'uuid';
 @Controller('todo')
 export class TodoController {
-  todos: Todo[] = [
-    new Todo(
-      '0',
-      'Todo 1',
-      'Description 1',
-      new Date(),
-      TodoStatusEnum.waiting,
-    ),
-    new Todo(
-      '1',
-      'Todo 2',
-      'Description 2',
-      new Date(),
-      TodoStatusEnum.waiting,
-    ),
-  ];
+  constructor() {
+    this.todos = [new Todo('1', 'Sport', 'Faire du sport')];
+  }
+  todos: Todo[] = [];
   @Get()
-  getTodos() {
+  getTodos(@Req() request: Request): Todo[] {
+    // console.log(request);
     return this.todos;
   }
   @Post()
-  addTodo(@Body() todo: any) {
-    let newTodo = new Todo(uuid());
-    newTodo = { ...newTodo, ...todo };
-    this.todos.push(newTodo);
-    return newTodo;
+  addTodo(@Body() newTodoData: Todo): Todo {
+    let todo = new Todo();
+    // const { name, description} = newTodoData;
+    todo.id = uuidv4();
+    todo = { ...todo, ...newTodoData };
+    this.todos.push(todo);
+    return todo;
   }
 }
