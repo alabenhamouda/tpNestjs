@@ -1,25 +1,41 @@
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+import { TodoService } from './todo.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { Todo } from './Model/todo.model';
-import { Request } from 'express';
-import { v4 as uuidv4 } from 'uuid';
-@Controller('todo')
+import { CreateTodoDTO } from './DTO/createTodo.dto';
+import { UpdateTodoDTO } from './DTO/updateTodo.dto';
+import { AllTodo } from './DTO/allTodo.dto';
+@Controller('todos')
 export class TodoController {
-  constructor() {
-    this.todos = [new Todo('1', 'Sport', 'Faire du sport')];
-  }
-  todos: Todo[] = [];
+  constructor(private todoService: TodoService) {}
   @Get()
-  getTodos(@Req() request: Request): Todo[] {
-    // console.log(request);
-    return this.todos;
+  getTodos(): Todo[] {
+    return this.todoService.getTodos();
+  }
+  @Get('/:id')
+  getTodoById(@Param('id') id: string): AllTodo {
+    return <AllTodo>this.todoService.getTodoById(id);
   }
   @Post()
-  addTodo(@Body() newTodoData: Todo): Todo {
-    let todo = new Todo();
-    // const { name, description} = newTodoData;
-    todo.id = uuidv4();
-    todo = { ...todo, ...newTodoData };
-    this.todos.push(todo);
-    return todo;
+  addTodo(@Body() newTodoData: CreateTodoDTO): AllTodo {
+    return this.todoService.addTodo(newTodoData);
+  }
+  @Put('/:id')
+  updateTodo(
+    @Param('id') id: string,
+    @Body() newTodoData: UpdateTodoDTO,
+  ): Todo {
+    return this.todoService.updateTodo(id, newTodoData);
+  }
+  @Delete('/:id')
+  deleteTodo(@Param('id') id: string): boolean {
+    return this.todoService.deleteTodo(id);
   }
 }
