@@ -9,9 +9,11 @@ import {
   Put,
 } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('premier')
 export class PremierController {
+  constructor(private configService: ConfigService){}
   @Get('/:name/:firstname')
   getPremierWithParam(@Param('name') params): string {
     console.log(params);
@@ -29,7 +31,7 @@ export class PremierController {
           observer.complete();
         }
         i--;
-        observer.next(msg += 'get ');
+        observer.next(msg += this.configService.get('TEST') + ' ');
       }, 500);
     }).pipe(map((data) => data.toUpperCase()));
     return observable;
