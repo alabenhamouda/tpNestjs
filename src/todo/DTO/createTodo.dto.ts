@@ -1,6 +1,8 @@
-import { PickType } from '@nestjs/mapped-types';
-import { AllTodo } from './allTodo.dto';
-export class CreateTodoDTO extends PickType(AllTodo, [
-  'name',
-  'description',
-]) {}
+import { IsString } from "class-validator";
+
+export class CreateTodoDTO {
+	@IsString()
+	name: string;
+	@IsString()
+	description: string;
+}

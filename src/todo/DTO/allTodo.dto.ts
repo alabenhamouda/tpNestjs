@@ -1,4 +1,3 @@
-
 import { TodoStatusEnum } from '../enums/todo-status.enum';
 
 export class AllTodo {

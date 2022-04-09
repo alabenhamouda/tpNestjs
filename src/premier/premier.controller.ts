@@ -8,7 +8,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { Observable, of } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Controller('premier')
 export class PremierController {
@@ -20,30 +20,18 @@ export class PremierController {
   }
 
   @Get()
-  getPremier(): Observable<number> {
-    const observable = new Observable<number>((observer) => {
-      let i = 5;
+  getPremier(): Observable<string> {
+    const observable = new Observable<string>((observer) => {
+      let i = 3;
+   	  let msg = '';
       setInterval(() => {
         if (!i) {
           observer.complete();
         }
-        observer.next(i--);
-      }, 1000);
-    });
-    observable.subscribe((val) => {
-      console.log(val);
-    });
-    observable.subscribe(
-      (val) => {
-        console.log('cc j ai recu la valeur ' + val);
-      },
-      (erreur) => {
-        console.log(erreur);
-      },
-      () => {
-        console.log('end of process');
-      },
-    );
+        i--;
+        observer.next(msg += 'get ');
+      }, 500);
+    }).pipe(map((data) => data.toUpperCase()));
     return observable;
     // console.log('GET 🐢');
     // return 'GET 🐢';
