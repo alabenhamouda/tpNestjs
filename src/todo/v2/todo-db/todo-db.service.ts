@@ -8,6 +8,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Brackets, Like, Repository } from 'typeorm';
 import { TodoService } from 'src/todo/interfaces/todo-service.interface';
 import { TodoStatusEnum } from 'src/todo/enums/todo-status.enum';
+import { StatInputDto } from 'src/todo/DTO/stat-input.dto';
+import { stat } from 'fs';
 
 @Injectable()
 export class TodoDbService implements TodoService {
@@ -87,5 +89,20 @@ export class TodoDbService implements TodoService {
   }
   getCount(): Promise<number> {
     return this.todoRepository.count();
+  }
+  getStats(statInput: StatInputDto): Promise<any> {
+    const qb = this.todoRepository.createQueryBuilder('todo');
+    qb.select('todo.status', 'status')
+      .addSelect('COUNT(todo.id)', 'count')
+      .groupBy('todo.status');
+    if (statInput.startDate) {
+      qb.where('todo.createdAt >= :startDate', {
+        startDate: statInput.startDate,
+      });
+    }
+    if (statInput.endDate)
+      qb.andWhere('todo.createdAt <= :endDate', { endDate: statInput.endDate });
+
+    return qb.getRawMany();
   }
 }

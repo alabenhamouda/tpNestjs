@@ -1,3 +1,4 @@
+import { StatInputDto } from './../../DTO/stat-input.dto';
 import { SearchTodoDto } from './../../DTO/search-todo.dto';
 import { TodoStatusEnum } from './../../enums/todo-status.enum';
 import { UpdateTodoDTO } from './../../DTO/updateTodo.dto';
@@ -46,6 +47,11 @@ export class TodoDbController implements TodoController {
       return res;
     }
     return this.todoDbService.getCountByStatus(queryParams.status);
+  }
+
+  @Get('stats')
+  getStats(@Query() statsInput: StatInputDto): Promise<any> {
+    return this.todoDbService.getStats(statsInput);
   }
 
   @Get('/:id')
