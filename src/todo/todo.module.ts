@@ -8,9 +8,8 @@ import { TodoDbService } from './v2/todo-db/todo-db.service';
 
 @Module({
   controllers: [TodoController, TodoDbController],
-	imports: [
-		TypeOrmModule.forFeature([TodoEntity]),
-	],
+  imports: [TypeOrmModule.forFeature([TodoEntity])],
   providers: [TodoService, TodoDbService],
+  exports: [TodoDbService],
 })
 export class TodoModule {}

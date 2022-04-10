@@ -1,4 +1,5 @@
-import { IsEnum, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsEnum, IsNumber, IsOptional } from 'class-validator';
 import { TodoStatusEnum } from '../enums/todo-status.enum';
 export class SearchTodoDto {
   @IsOptional()
@@ -7,4 +8,9 @@ export class SearchTodoDto {
 
   @IsOptional()
   criteria?: string;
+
+  @Type(() => Number)
+  @IsOptional()
+  @IsNumber()
+  page?: number;
 }

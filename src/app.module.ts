@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { PremierModule } from './premier/premier.module';
 import { TodoModule } from './todo/todo.module';
+import { FakeDataModule } from './fake-data/fake-data.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { TodoModule } from './todo/todo.module';
       }),
       inject: [ConfigService],
     }),
+    FakeDataModule,
   ],
   controllers: [AppController],
   providers: [],

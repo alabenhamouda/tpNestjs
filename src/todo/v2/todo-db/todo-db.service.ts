@@ -1,3 +1,4 @@
+import { SharedConstants } from './../../../util/shared/shared-constants';
 import { SearchTodoDto } from './../../DTO/search-todo.dto';
 import { UpdateTodoDTO } from './../../DTO/updateTodo.dto';
 import { CreateTodoDTO } from './../../DTO/createTodo.dto';
@@ -47,6 +48,13 @@ export class TodoDbService implements TodoService {
         }),
       );
     }
+
+    // add pagination
+    if (queryParams.page) {
+      qb.offset((queryParams.page - 1) * SharedConstants.PAGE_LENGTH);
+      qb.limit(SharedConstants.PAGE_LENGTH);
+    }
+
     return qb.getMany();
   }
   async getTodoById(id: string) {
@@ -58,6 +66,9 @@ export class TodoDbService implements TodoService {
   }
   addTodo(todo: CreateTodoDTO): Promise<TodoEntity> {
     return this.todoRepository.save(todo);
+  }
+  batchAddTodo(todos: CreateTodoDTO[]): Promise<TodoEntity[]> {
+    return this.todoRepository.save(todos);
   }
   updateTodo(id: string, todo: UpdateTodoDTO): Promise<TodoEntity> {
     return this.todoRepository.save({ ...todo, id });
