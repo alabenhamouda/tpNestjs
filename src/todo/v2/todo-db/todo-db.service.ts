@@ -4,7 +4,7 @@ import { CreateTodoDTO } from './../../DTO/createTodo.dto';
 import { TodoEntity } from './../../entity/todo.entity';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
+import { Brackets, Like, Repository } from 'typeorm';
 import { TodoService } from 'src/todo/interfaces/todo-service.interface';
 import { TodoStatusEnum } from 'src/todo/enums/todo-status.enum';
 
@@ -15,15 +15,39 @@ export class TodoDbService implements TodoService {
     private todoRepository: Repository<TodoEntity>,
   ) {}
   getTodos(queryParams: SearchTodoDto): Promise<TodoEntity[]> {
-    const options = [];
+    // first version
+    // const options = [];
+    // if (queryParams.status) {
+    //   options.push({ status: queryParams.status });
+    // }
+    // if (queryParams.criteria) {
+    //   options.push({ name: Like(`%${queryParams.criteria}%`) });
+    //   options.push({ description: Like(`%${queryParams.criteria}%`) });
+    // }
+    // return this.todoRepository.find({ where: options });
+
+    // second version
+    const qb = this.todoRepository.createQueryBuilder('todo');
     if (queryParams.status) {
-      options.push({ status: queryParams.status });
+      qb.where('todo.status = :status', { status: queryParams.status });
     }
     if (queryParams.criteria) {
-      options.push({ name: Like(`%${queryParams.criteria}%`) });
-      options.push({ description: Like(`%${queryParams.criteria}%`) });
+      // qb.andWhere(
+      //   '(todo.name LIKE :criteria OR todo.description LIKE :criteria)',
+      //   { criteria: `%${queryParams.criteria}%` },
+      // );
+      qb.andWhere(
+        new Brackets((bqb) => {
+          bqb.where('todo.name LIKE :criteria', {
+            criteria: `%${queryParams.criteria}%`,
+          });
+          bqb.orWhere('todo.description LIKE :criteria', {
+            criteria: `%${queryParams.criteria}%`,
+          });
+        }),
+      );
     }
-    return this.todoRepository.find({ where: options });
+    return qb.getMany();
   }
   async getTodoById(id: string) {
     const todo = await this.todoRepository.findOne(id);
