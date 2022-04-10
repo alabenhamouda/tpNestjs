@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Skill } from 'src/skill/entities/skill.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Skill } from '../skill/entities/skill.entity';
+import { User } from '../user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateCvDto } from './dto/create-cv.dto';
 import { UpdateCvDto } from './dto/update-cv.dto';

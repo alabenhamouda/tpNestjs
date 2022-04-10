@@ -6,10 +6,9 @@ import { TodoEntity } from './../../entity/todo.entity';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Brackets, Like, Repository } from 'typeorm';
-import { TodoService } from 'src/todo/interfaces/todo-service.interface';
-import { TodoStatusEnum } from 'src/todo/enums/todo-status.enum';
-import { StatInputDto } from 'src/todo/DTO/stat-input.dto';
-import { stat } from 'fs';
+import { TodoService } from '../../interfaces/todo-service.interface';
+import { TodoStatusEnum } from '../../enums/todo-status.enum';
+import { StatInputDto } from '../../DTO/stat-input.dto';
 
 @Injectable()
 export class TodoDbService implements TodoService {

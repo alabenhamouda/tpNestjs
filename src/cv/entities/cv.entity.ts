@@ -1,7 +1,7 @@
 import { Timestamp } from './../../util/entities/timestamp';
 import { Mixin } from 'ts-mixer';
 import { Skill } from './../../skill/entities/skill.entity';
-import { User } from 'src/user/entities/user.entity';
+import { User } from '../../user/entities/user.entity';
 import {
   Column,
   Entity,

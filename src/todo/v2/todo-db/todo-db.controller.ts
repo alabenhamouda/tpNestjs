@@ -17,8 +17,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { TodoDbService } from './todo-db.service';
-import { TodoController } from 'src/todo/interfaces/todo-controller.interface';
-import { CountByStatusQueryParamsDTO } from 'src/todo/DTO/count-by-status-param.dto';
+import { TodoController } from '../../interfaces/todo-controller.interface';
+import { CountByStatusQueryParamsDTO } from '../../DTO/count-by-status-param.dto';
 
 @Controller({
   path: 'todos',
