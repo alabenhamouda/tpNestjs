@@ -1,3 +1,5 @@
+import { Timestamp } from './../../util/entities/timestamp';
+import { Mixin } from 'ts-mixer';
 import { Skill } from './../../skill/entities/skill.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
@@ -9,7 +11,7 @@ import {
 } from 'typeorm';
 
 @Entity('cv')
-export class Cv {
+export class Cv extends Mixin(Timestamp) {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

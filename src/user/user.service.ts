@@ -48,4 +48,11 @@ export class UserService {
   restore(id: string) {
     return this.userRepository.restore(id);
   }
+
+  async getUserCvs(id: string) {
+    const user: User = await this.userRepository.findOne(id, {
+      relations: ['cvs'],
+    });
+    return user.cvs;
+  }
 }
