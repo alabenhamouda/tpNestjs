@@ -5,6 +5,9 @@ import { AppController } from './app.controller';
 import { PremierModule } from './premier/premier.module';
 import { TodoModule } from './todo/todo.module';
 import { FakeDataModule } from './fake-data/fake-data.module';
+import { UserModule } from './user/user.module';
+import { CvModule } from './cv/cv.module';
+import { SkillModule } from './skill/skill.module';
 
 @Module({
   imports: [
@@ -27,6 +30,9 @@ import { FakeDataModule } from './fake-data/fake-data.module';
       inject: [ConfigService],
     }),
     FakeDataModule,
+    UserModule,
+    CvModule,
+    SkillModule,
   ],
   controllers: [AppController],
   providers: [],
